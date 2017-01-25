@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 2.8)
+project(MetabotAPI)
+
+set (CMAKE_CXX_FLAGS "-std=c++11")
+
+add_subdirectory (../src/ libmetabot)
+include_directories ("${METABOT_HEADERS}")
+
+add_executable (metabot main.cpp)
+target_link_libraries (metabot LibMetabot)
+
