@@ -2,6 +2,9 @@
 
 #include <string>
 #include <thread>
+#include <serial/serial.h>
+
+#include "Packet.h"
 
 namespace Metabot
 {
@@ -10,12 +13,16 @@ namespace Metabot
         public:
             Robot(std::string name, int baud=1000000);
             virtual ~Robot();
+            
+            virtual void onMonitor(Packet &packet)=0;
+            void monitor(int frequency);
 
+            void send(Packet &packet);
+            void receive(Packet &packet);
             void process();
 
         protected:
-            std::string name;
-            int baud;
+            serial::Serial port;
             std::thread *thread;
     };
 }
