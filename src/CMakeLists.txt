@@ -8,7 +8,7 @@ option (PYTHON_BINDING "Enable python binding" ON)
 
 add_subdirectory (vendor/pybind11 pybind11)
 add_subdirectory (vendor/serial serial)
-include_directories (vendor/serial/)
+include_directories (vendor/serial/include/)
 include_directories (vendor/pybind11/include/)
 
 set (CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wno-reorder -pedantic")

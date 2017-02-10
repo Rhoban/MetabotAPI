@@ -3,7 +3,7 @@
 #include <string>
 #include <mutex>
 #include <thread>
-#include "serial/serial.h"
+#include <serial/serial.h>
 
 #include "Packet.h"
 
