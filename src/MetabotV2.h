@@ -19,7 +19,8 @@ namespace Metabot
                 SET_CONTROL=3,
                 CONTROL=4,
                 BEEP=5,
-                LEDS=6
+                LEDS=6,
+                RESET=7
             };
 
             enum {
@@ -34,6 +35,11 @@ namespace Metabot
             Packet command(uint8_t instruction);
 
             /**
+             * Wait for the robot to receive an update
+             */
+            void waitUpdate();
+
+            /**
              * Enable the motors (this take several seconds since the torque is
              * slowly increased in the robot)
              */
@@ -43,6 +49,11 @@ namespace Metabot
              * Disables the motors
              */
             void stop();
+
+            /**
+             * Reset (stops all motion, buzzer, restore leds etc.)
+             */
+            void reset();
 
             /**
              * Controls the robot speed (in mm/s and °/s)

@@ -28,7 +28,13 @@ namespace Metabot
 
             distance = packet.readSmallFloat();
             voltage = packet.readSmallFloat();
+            mutex.unlock();
         }
+    }
+
+    void MetabotV2::waitUpdate()
+    {
+        mutex.lock();
     }
 
     Packet MetabotV2::command(uint8_t instruction)
@@ -45,6 +51,12 @@ namespace Metabot
     void MetabotV2::stop()
     {
         Packet packet = command(STOP);
+        send(packet);
+    }
+
+    void MetabotV2::reset()
+    {
+        Packet packet = command(RESET);
         send(packet);
     }
 
