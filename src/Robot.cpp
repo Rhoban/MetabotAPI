@@ -1,19 +1,24 @@
+#include <iostream>
 #include "Robot.h"
 #include <unistd.h>
 
 namespace Metabot
 {
     Robot::Robot(std::string name, int baud)
-        : port(name, baud, serial::Timeout::simpleTimeout(1000))
+        : port(name, baud, serial::Timeout::simpleTimeout(1000)), over(false)
     {
+        mutex.lock();
         thread = new std::thread([this]() {
             this->process();
         });
+        mutex.lock();
     }
 
     Robot::~Robot()
     {
         if (thread) {
+            over = true;
+            thread->join();
             delete thread;
             thread = NULL;
         }
@@ -21,18 +26,18 @@ namespace Metabot
 
     void Robot::send(Packet &packet)
     {
-        port.write(packet.toRaw());
+        std::string raw = packet.toRaw();
+        port.write(raw);
     }
 
     void Robot::receive(Packet &packet)
     {
-
     }
 
     void Robot::monitor(int frequency)
     {
         // Enabling monitoring
-        send(Packet(Packet::MONITOR).appendInt(10));
+        send(Packet(Packet::MONITOR).appendInt(frequency));
     }
 
     void Robot::process()
@@ -42,6 +47,7 @@ namespace Metabot
 
         // Reseting monitor
         monitor(0);
+        mutex.unlock();
 
         int state = 0;
         int type = 0;
@@ -49,8 +55,8 @@ namespace Metabot
         int pos = 0;
         uint8_t checksum = 0;
         std::string payload;
-        while (true) {
-            if (port.waitReadable(1)) {
+        while (!over) {
+            if (port.waitReadable(0.1)) {
                 size_t n = port.available();
                 uint8_t *data = new uint8_t[n];
                 port.read(data, n);
@@ -85,6 +91,7 @@ namespace Metabot
                             }
                             break;
                         case 4:
+                            pos++;
                             payload += (char)c;
                             checksum += c;
                             if (pos >= size) {

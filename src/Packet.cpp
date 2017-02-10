@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Packet.h"
 
 namespace Metabot
@@ -25,7 +26,7 @@ namespace Metabot
         return *this;
     }
     
-    Packet& Packet::appendShort(int s)
+    Packet& Packet::appendShort(uint16_t s)
     {
         appendByte((s>>8)&0xff);
         appendByte((s>>0)&0xff);
@@ -40,6 +41,13 @@ namespace Metabot
         return *this;
     }
     
+    Packet& Packet::appendSmallFloat(float f)
+    {
+        appendShort(f*10.0);
+
+        return *this;
+    }
+    
     uint8_t Packet::available()
     {
         return payload.size()-pos;
@@ -47,12 +55,22 @@ namespace Metabot
 
     uint8_t Packet::readByte()
     {
+        if (pos >= payload.size()) {
+            std::cerr << "Error: trying to read too much data (" << pos << "/" << payload.size() << ")" << std::endl;
+            exit(0);
+            return 0;
+        }
         return payload[pos++];
     }
 
     float Packet::readFloat()
     {
         return readInt()/1000.0;
+    }
+    
+    float Packet::readSmallFloat()
+    {
+        return readShort()/10.0;
     }
 
     int Packet::readInt()
@@ -66,17 +84,18 @@ namespace Metabot
         return i;
     }
 
-    int Packet::readShort()
+    int16_t Packet::readShort()
     {
-        int i = 0;
+        uint16_t i = 0;
         i |= readByte()<<8;
         i |= readByte()<<0;
 
-        return i;
+        return (int16_t)i;
     }
         
     void Packet::setPayload(std::string payload_)
     {
+        pos = 0;
         payload = payload_;
     }
             
@@ -92,5 +111,10 @@ namespace Metabot
         raw += (char)checksum;
 
         return raw;
+    }
+
+    int Packet::getSize()
+    {
+        return payload.size();
     }
 }

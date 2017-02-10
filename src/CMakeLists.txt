@@ -12,6 +12,7 @@ set (CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wno-reorder -pedantic")
 
 set (SOURCES
     Robot.cpp
+    MetabotV2.cpp
     Packet.cpp
     )
 

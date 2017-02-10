@@ -21,18 +21,21 @@ namespace Metabot
 
             Packet& appendByte(uint8_t b);
             Packet& appendFloat(float f);
+            Packet& appendSmallFloat(float f);
             Packet& appendInt(int i);
-            Packet& appendShort(int s);
+            Packet& appendShort(uint16_t s);
 
             uint8_t available();
             uint8_t readByte();
             float readFloat();
+            float readSmallFloat();
             int readInt();
-            int readShort();
+            int16_t readShort();
 
             int type;
 
             void setPayload(std::string payload);
+            int getSize();
             std::string toRaw();
         
         protected:
