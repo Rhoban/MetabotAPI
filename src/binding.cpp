@@ -27,6 +27,9 @@ PYBIND11_PLUGIN(metabot) {
 
         .def_readwrite("motors", &MetabotV2::motors)
         .def_readonly("voltage", &MetabotV2::voltage)
+        .def_readonly("yaw", &MetabotV2::yaw)
+        .def_readonly("pitch", &MetabotV2::pitch)
+        .def_readonly("roll", &MetabotV2::roll)
         .def_readonly("distance", &MetabotV2::distance)
         .def_readwrite("leds", &MetabotV2::leds)
         ;

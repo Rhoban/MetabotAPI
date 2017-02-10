@@ -6,7 +6,7 @@ using namespace Metabot;
 
 int main()
 {
-    MetabotV2 metabot("/dev/ttyACM0");
+    MetabotV2 metabot("/dev/rfcomm0");
 
     // Enable monitoring
     metabot.monitor(10);

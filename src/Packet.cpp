@@ -26,7 +26,7 @@ namespace Metabot
         return *this;
     }
     
-    Packet& Packet::appendShort(uint16_t s)
+    Packet& Packet::appendShort(int16_t s)
     {
         appendByte((s>>8)&0xff);
         appendByte((s>>0)&0xff);

@@ -23,7 +23,7 @@ namespace Metabot
             Packet& appendFloat(float f);
             Packet& appendSmallFloat(float f);
             Packet& appendInt(int i);
-            Packet& appendShort(uint16_t s);
+            Packet& appendShort(int16_t s);
 
             uint8_t available();
             uint8_t readByte();

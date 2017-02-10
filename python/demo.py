@@ -2,7 +2,7 @@
 from metabot import MetabotV2
 import time
 
-metabot = MetabotV2('/dev/ttyACM0')
+metabot = MetabotV2('/dev/rfcomm0')
 
 # Monitoring
 metabot.monitor(10)
