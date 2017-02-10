@@ -76,13 +76,13 @@ namespace Metabot
             void setLeds(std::string color);
 
             // Motors position
-            float motors[12];
+            std::vector<float> motors;
 
             // Imu
             float yaw, pitch, roll;
 
             // Leds
-            int leds[12];
+            std::vector<int> leds;
             
             // Distance sensor
             float distance;

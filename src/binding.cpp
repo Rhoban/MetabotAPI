@@ -1,4 +1,5 @@
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 #include "MetabotV2.h"
 
 using namespace Metabot;
@@ -24,10 +25,10 @@ PYBIND11_PLUGIN(metabot) {
         .def("setLeds", (void (MetabotV2::*)(uint8_t)) &MetabotV2::setLeds)
         .def("setLeds", (void (MetabotV2::*)(std::string)) &MetabotV2::setLeds)
 
-        .def_readonly("motors", &MetabotV2::motors)
+        .def_readwrite("motors", &MetabotV2::motors)
         .def_readonly("voltage", &MetabotV2::voltage)
         .def_readonly("distance", &MetabotV2::distance)
-        .def_readonly("leds", &MetabotV2::leds)
+        .def_readwrite("leds", &MetabotV2::leds)
         ;
 
     return m.ptr();

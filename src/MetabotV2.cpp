@@ -5,7 +5,7 @@
 namespace Metabot
 {
     MetabotV2::MetabotV2(std::string port, int baud)
-        : Robot(port, baud)
+        : Robot(port, baud), motors(12, 0), leds(12, 0)
     {
     }
 
