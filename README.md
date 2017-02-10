@@ -18,6 +18,9 @@ communicate with the robot.
 
 ## Using the python librrary
 
+Note that you need to install the `pythonXX-dev` packages (replace XX with your
+version of python you want to use).
+
 First, you will need to compile the native library, for this:
 
     cd src/
