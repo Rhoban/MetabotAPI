@@ -1,30 +1,33 @@
 cmake_minimum_required(VERSION 2.8)
 project(MetabotAPI)
 
+# Defines the METABOT_HEADERS (if you want to use this as a CMAKE
+# subdirectory
 set (METABOT_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}" CACHE STRING
     "Metabot header files to include")
 
-option (PYTHON_BINDING "Enable python binding" ON)
-
-add_subdirectory (vendor/pybind11 pybind11)
+# Vendors
 add_subdirectory (vendor/serial serial)
 include_directories (vendor/serial/include/)
-include_directories (vendor/pybind11/include/)
 
+# C++11, pedantic warnings
 set (CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wno-reorder -pedantic")
 
+# API source
 set (SOURCES
     Robot.cpp
     MetabotV2.cpp
     Packet.cpp
     )
 
-# Building the library
-add_library (LibMetabot SHARED ${SOURCES})
-target_link_libraries (LibMetabot serial)
+set (FULL_SOURCES)
 
-if (PYTHON_BINDING)
-    # Building the python binding
-    pybind11_add_module (metabot ${SOURCES} binding.cpp)
-    target_link_libraries (metabot serial)
-endif ()
+foreach (SOURCE ${SOURCES})
+    set (FULL_SOURCES ${FULL_SOURCES} "${CMAKE_CURRENT_SOURCE_DIR}/${SOURCE}")
+endforeach ()
+
+set (METABOT_SOURCES ${FULL_SOURCES} CACHE STRING
+    "Metabot source files")
+
+set (METABOT_LIBS serial CACHE STRING
+    "Metabot libraries")

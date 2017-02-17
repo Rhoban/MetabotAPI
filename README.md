@@ -23,7 +23,7 @@ version of python you want to use).
 
 First, you will need to compile the native library, for this:
 
-    cd src/
+    cd python/
     mkdir build
     cd build
     cmake ..
@@ -37,6 +37,6 @@ Then, this will produce a `.so` file (`metabot.so` or `metabot.cpython-....so`),
 should be in your `PYTHON_PATH` (or in the directory where you run python command). For
 example, you can run the `demo.py` script from the build directory:
 
-    PYTHONPATH=`pwd` python ../../python/demo.py
+    PYTHONPATH=`pwd` python ../demo.py
 
 
