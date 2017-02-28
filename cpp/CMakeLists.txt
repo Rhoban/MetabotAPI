@@ -6,11 +6,7 @@ set (CMAKE_CXX_FLAGS "-std=c++11")
 option (PYTHON_BINDING "Enable python binding" OFF)
 
 add_subdirectory (../src/ libmetabot)
-include_directories ("${METABOT_HEADERS}")
-
-# Building Metabot library
-add_library (LibMetabot ${METABOT_SOURCES})
-target_link_libraries (LibMetabot ${METABOT_LIBS})
+include_directories (${METABOT_HEADERS})
 
 # Building program
 add_executable (metabot main.cpp)

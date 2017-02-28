@@ -16,5 +16,5 @@ set (SOURCES
     )
 
 # Building the python binding
-pybind11_add_module (metabot ${METABOT_SOURCES} ${SOURCES} binding.cpp)
-target_link_libraries (metabot ${METABOT_LIBS})
+pybind11_add_module (metabot ${METABOT_SOURCES} binding.cpp)
+target_link_libraries (metabot LibMetabot)
