@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Robot.h"
 #include <unistd.h>
+#include <stdio.h>
 
 namespace Metabot
 {
@@ -40,15 +41,21 @@ namespace Metabot
         send(Packet(Packet::MONITOR).appendInt(frequency));
     }
 
+    void Robot::rhock_mode() {
+      printf("- requesting rhock mode\n");
+      port.write("rhock\nrhock\nrhock\n");    
+    }
+
     void Robot::process()
     {
         // Ensuring the robot is in rhock mode
-        port.write("rhock\nrhock\nrhock\n");
+        rhock_mode();
 
         // Reseting monitor
         monitor(0);
         mutex.unlock();
 
+	printf("- listening to robot\n");
         int state = 0;
         int type = 0;
         int size = 0;

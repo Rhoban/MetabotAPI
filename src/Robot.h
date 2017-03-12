@@ -16,6 +16,7 @@ namespace Metabot
             virtual ~Robot();
             
             void monitor(int frequency);
+	    void rhock_mode();
 
             void send(Packet &packet);
             virtual void receive(Packet &packet);
