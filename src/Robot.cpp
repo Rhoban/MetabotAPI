@@ -50,7 +50,7 @@ namespace Metabot
     {
         // Ensuring the robot is in rhock mode
         rhock_mode();
-
+	
         // Reseting monitor
         monitor(0);
         mutex.unlock();

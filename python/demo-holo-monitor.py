@@ -7,24 +7,11 @@
  
 from holobot import Holobot
 import time
-import sys
-import math
 
 print("- connexion à Holobot")
 # holo = Holobot('/dev/tty.usbmodem1451', 115200)
 holo = Holobot('/dev/tty.holo-DevB', 115200)
 
-# pour etre sur ... (a bouger ailleur !)
-time.sleep(1)
-holo.rhock_mode()
-time.sleep(1)
-holo.rhock_mode()
-
-print("- monitoring du robot")
-holo.monitor(20)
-holo.waitUpdate()
-
-time.sleep(1)
 holo.debug_state(1)
 
 while True:

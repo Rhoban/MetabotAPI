@@ -1,6 +1,7 @@
 #include <map>
 #include <iostream>
 #include <stdio.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include "Holobot.h"
 
@@ -11,6 +12,12 @@ namespace Metabot
     : Robot(port, baud)
   {
     output_state = false;
+    usleep(250000);
+    rhock_mode();
+    usleep(250000);
+    printf("- monitoring at 20Hz\n");
+    monitor(20);
+    waitUpdate();
   }
 
   void Holobot::receive(Packet &packet) {
@@ -22,6 +29,9 @@ namespace Metabot
       for (int i=0; i<3; i++)
 	wheel_speeds[i] = packet.readSmallFloat();
       gyro_yaw = 10*packet.readSmallFloat();
+      acc_x = 10*packet.readSmallFloat();
+      acc_y = 10*packet.readSmallFloat();
+      acc_z = 10*packet.readSmallFloat();
       current_time = (float) ((uint32_t) packet.readInt()) / 1000;
       if (output_state) print_state();
       mutex.unlock();
@@ -97,6 +107,7 @@ namespace Metabot
     printf("\n");
     printf("- distances (cm): %4.1f %4.1f %4.1f\n", distances[0], distances[1], distances[2]);
     printf("- gyro yaw (deg): %4.0f\n", gyro_yaw);
+    printf("- acc: X:%4.0f Y:%4.0f Z:%4.0f\n", acc_x, acc_y, acc_z); 
   }
 
   void Holobot::debug_state(uint8_t on_or_off) {
