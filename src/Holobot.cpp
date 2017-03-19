@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "Holobot.h"
+#include <math.h>
 
 namespace Metabot
 {
@@ -18,6 +19,15 @@ namespace Metabot
     printf("- monitoring at 20Hz\n");
     monitor(20);
     waitUpdate();
+    sent_dx = 0;
+    sent_dy = 0;
+    sent_turn = 0;
+    yaw0 = 0;
+  }
+
+  Holobot::~Holobot() {
+    control(0,0,0);
+    usleep(500000);
   }
 
   void Holobot::receive(Packet &packet) {
@@ -53,8 +63,12 @@ namespace Metabot
     return optics[i];
   }
 
+  void Holobot::reset_yaw() {
+    yaw0 = gyro_yaw;
+  }
+
   float Holobot::get_yaw() {
-    return gyro_yaw;
+    return gyro_yaw - yaw0;
   }
 
   float Holobot::get_time() {
@@ -75,10 +89,31 @@ namespace Metabot
   {
     // TODO: attention aux limites (faire remonter un warning en cas de dépassement)
     Packet packet = command(2);
-    packet.appendShort((short) dx);
-    packet.appendShort((short) dy);
-    packet.appendShort((short) turn);
-    send(packet);
+    short dx_to_send = (short) dx;
+    short dy_to_send = (short) dy;
+    short turn_to_send = (short) turn;
+    if (dx_to_send != sent_dx || dy_to_send != sent_dy || turn_to_send != sent_turn) {
+      packet.appendShort(dx_to_send);
+      packet.appendShort(dy_to_send);
+      packet.appendShort(turn_to_send);
+      send(packet);
+      sent_dx = dx_to_send;
+      sent_dy = dy_to_send;
+      sent_turn = turn_to_send;
+    }
+  }
+
+  void Holobot::move_toward(float speed, float direction) {
+    float rad_dir = M_PI * direction / 180.0;
+    control(cos(M_PI/3 + rad_dir)*speed, sin(M_PI/3 + rad_dir)*speed, sent_turn);
+  }
+
+  void Holobot::turn(float rot_speed) {
+    control(sent_dx, sent_dy, rot_speed);
+  }
+
+  void Holobot::stop_all() {
+    control(0, 0, 0);
   }
 
   void Holobot::beep(short freq, short duration)
@@ -98,6 +133,10 @@ namespace Metabot
     send(packet);
   }
 
+  float Holobot::get_wheel_speeds(int id) {
+    return wheel_speeds[id];
+  }
+
   void Holobot::print_state() {
     printf("-------------------------------------------------------------------------------\n");
     printf("- time : %0.3fs\n", current_time);
@@ -107,7 +146,7 @@ namespace Metabot
     printf("\n");
     printf("- distances (cm): %4.1f %4.1f %4.1f\n", distances[0], distances[1], distances[2]);
     printf("- gyro yaw (deg): %4.0f\n", gyro_yaw);
-    printf("- acc: X:%4.0f Y:%4.0f Z:%4.0f\n", acc_x, acc_y, acc_z); 
+    printf("- accelerometer: X:%4.0f Y:%4.0f Z:%4.0f\n", acc_x, acc_y, acc_z); 
   }
 
   void Holobot::debug_state(uint8_t on_or_off) {

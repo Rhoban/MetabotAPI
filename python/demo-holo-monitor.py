@@ -8,15 +8,12 @@
 from holobot import Holobot
 import time
 
-print("- connexion à Holobot")
-# holo = Holobot('/dev/tty.usbmodem1451', 115200)
 holo = Holobot('/dev/tty.holo-DevB', 115200)
-
 holo.debug_state(1)
-
 while True:
     try:
         time.sleep(1)
     except KeyboardInterrupt:
         break
+holo.debug_state(0)
 

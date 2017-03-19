@@ -11,6 +11,8 @@ namespace Metabot
     class Holobot : public Robot
     {
             bool output_state;
+	    short sent_dx, sent_dy, sent_turn;
+	    float yaw0;
         public:
 	    float current_time; 
 	    float distances[3];
@@ -20,6 +22,7 @@ namespace Metabot
 	    float acc_x, acc_y, acc_z;
 
             Holobot(std::string port, int baud=1000000);
+	    ~Holobot();
             void receive(Packet &packet);
             Packet command(uint8_t instruction);
 	    void waitUpdate();
@@ -35,6 +38,8 @@ namespace Metabot
 	    float get_opt(int i); /* sensors are identified from 0 to 4, from right to left, viewed from up */
 	    /* yaw, relative to the start in degree, in trigonometric way from the upper view */
 	    float get_yaw(); /* the yaw computed from the gyro, more precise than the magnetic yaw, but drift (several degree/mn) */
+	    /* set the current yaw to be the yaw 0.0 deg (as yaw is computed from the gyro, it is relative */
+	    void reset_yaw();		
 	    /* the speeds of the wheels (deg/s). The wheels ids are as follows:
 	     * 0: the wheel at the left (from up view) of the usb plug
 	     * 1: the wheel at the right of the usb plug
@@ -44,6 +49,12 @@ namespace Metabot
 
 	    /* TODO: unités ? */
 	    void control(float dx, float dy, float turn);
+	    /* speed: mm/s ; direction : deg, anti trigo from the direction of optic sensors */
+	    void move_toward(float speed, float direction);
+	    /* rot_speed : deg / sec */
+	    void turn(float rot_speed);
+	    void stop_all();
+
 	    void set_board_led(uint8_t state);
 	    void beep(short freq, short duration);
 	    void play(short id);

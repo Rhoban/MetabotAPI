@@ -21,12 +21,18 @@ PYBIND11_PLUGIN(holobot) {
 
         .def("rhock_mode", &Holobot::rhock_mode)
         .def("control", &Holobot::control)
+        .def("move_toward", &Holobot::move_toward)
+        .def("turn", &Holobot::turn)
+        .def("stop_all", &Holobot::stop_all)
         .def("beep", &Holobot::beep)
         .def("play", &Holobot::play)
       
+        .def("get_time", &Holobot::get_time)
         .def("get_dist", &Holobot::get_dist)
         .def("get_opt", &Holobot::get_opt)
         .def("get_yaw", &Holobot::get_yaw)
+        .def("get_wheel_speeds", &Holobot::get_wheel_speeds)
+        .def("reset_yaw", &Holobot::reset_yaw)
         .def("print_state", &Holobot::print_state)
         .def("debug_state", &Holobot::debug_state)
         .def_readonly("current_time", &Holobot::current_time)
