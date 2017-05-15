@@ -24,6 +24,7 @@ PYBIND11_PLUGIN(metabot) {
         .def("control", &MetabotV2::control)
         .def("setLeds", (void (MetabotV2::*)(uint8_t)) &MetabotV2::setLeds)
         .def("setLeds", (void (MetabotV2::*)(std::string)) &MetabotV2::setLeds)
+        .def("bhv", &MetabotV2::bhv)
 
         .def_readwrite("motors", &MetabotV2::motors)
         .def_readonly("voltage", &MetabotV2::voltage)
