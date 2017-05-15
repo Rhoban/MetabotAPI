@@ -20,7 +20,8 @@ namespace Metabot
                 CONTROL=4,
                 BEEP=5,
                 LEDS=6,
-                RESET=7
+                RESET=7,
+                BHV=8
             };
 
             enum {
@@ -74,6 +75,11 @@ namespace Metabot
              * LEDs (by color name)
              */
             void setLeds(std::string color);
+
+            /**
+             * Enable given behavior
+             */
+            void bhv(uint8_t b);
 
             // Motors position
             std::vector<float> motors;
