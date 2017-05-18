@@ -4,12 +4,20 @@ import time
 
 metabot = MetabotV2('/dev/rfcomm0')
 
-# Monitoring
+# Monitoring (otherwise the read commands won't work)
 metabot.monitor(10)
 metabot.waitUpdate();
 
 # Printing status
 print('MetabotV2, voltage: %.1fV' % metabot.voltage)
+
+# Printing the current position of the motors (works because metabot.start() wasn't called yet, otherwise the goal position of the motors would have been returned)
+for i in range(30) :
+    print('yaw:' + str(metabot.yaw))
+    print('pitch:' + str(metabot.pitch))
+    print('roll:' + str(metabot.roll))
+    print('Motor positions:' + str(metabot.motors))
+    time.sleep(0.1)
 
 # Starting motors
 print('')
