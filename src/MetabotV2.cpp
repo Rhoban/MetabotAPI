@@ -105,4 +105,11 @@ namespace Metabot
             std::cerr << "Unknown color: " << color << std::endl;
         }
     }
+            
+    void MetabotV2::bhv(uint8_t b)
+    {
+        Packet packet = command(BHV);
+        packet.appendByte(b);
+        send(packet);
+    }
 }

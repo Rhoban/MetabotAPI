@@ -16,7 +16,7 @@ the `cpp/` directory:
 The `main.cpp` and the `CMakeLists.txt` provide a way to produce a binary that will
 communicate with the robot.
 
-## Using the python librrary
+## Using the python library
 
 Note that you need to install the `pythonXX-dev` packages (replace XX with your
 version of python you want to use).
@@ -27,7 +27,8 @@ First, you will need to compile the native library, for this:
     mkdir build
     cd build
     cmake ..
-
+    make
+    
 If you want, you can give a specific version of the target python (2.7, 3 etc.) like
 this instead:
 
@@ -38,5 +39,8 @@ should be in your `PYTHON_PATH` (or in the directory where you run python comman
 example, you can run the `demo.py` script from the build directory:
 
     PYTHONPATH=`pwd` python ../demo.py
+
+You can add the following line in your .bashrc (linux) to add the *.so to the python path:
+export PYTHONPATH="${PYTHONPATH}:/path/to/MetabotAPI/python/"
 
 
