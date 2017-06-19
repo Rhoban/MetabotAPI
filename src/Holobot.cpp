@@ -68,7 +68,10 @@ namespace Metabot
   }
 
   float Holobot::get_yaw() {
-    return gyro_yaw - yaw0;
+    float yaw = gyro_yaw - yaw0;
+    while (yaw < -180.0) yaw += 360;
+    while (yaw > 180.0) yaw -= 360;
+    return yaw;
   }
 
   float Holobot::get_time() {
