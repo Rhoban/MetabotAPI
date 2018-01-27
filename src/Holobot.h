@@ -1,5 +1,7 @@
 #pragma once
 #include "Robot.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 #define METABOT_MONITOR 5
 #define HOLOBOT_COMMAND 80
@@ -11,6 +13,8 @@ namespace Metabot
     class Holobot : public Robot
     {
             bool output_state;
+	    bool experiment_mode;
+	    FILE * experiment_file;
 	    short sent_dx, sent_dy, sent_turn;
 	    float yaw0;
         public:
@@ -18,6 +22,7 @@ namespace Metabot
 	    float distances[3];
 	    float optics[OPTICS_NB];
 	    float wheel_speeds[3];
+	    float wheel_speed_tgts[3];
 	    float gyro_yaw;
 	    float acc_x, acc_y, acc_z;
 
