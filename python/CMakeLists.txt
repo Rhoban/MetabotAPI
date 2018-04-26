@@ -5,7 +5,7 @@ project(MetabotAPI)
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/../src/" metabot)
 include_directories (${METABOT_HEADERS})
 add_subdirectory (vendor/pybind11 pybind11)
-include_directories (vendor/pybind11/include/ /usr/include/python2.7/)
+include_directories (vendor/pybind11/include/)
 
 # C++11, pedantic warnings
 set (CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wno-reorder -pedantic")
@@ -18,7 +18,7 @@ set (SOURCES
 
 # Building the python binding
 pybind11_add_module (metabot ${METABOT_SOURCES} binding.cpp)
-target_link_libraries (metabot LibMetabot)
+target_link_libraries (metabot LibMetabot ${PYTHON_LIBRARY} pybind11::module)
 
 pybind11_add_module (holobot ${METABOT_SOURCES} bindingHolobot.cpp)
-target_link_libraries (holobot LibMetabot)
+target_link_libraries (holobot LibMetabot ${PYTHON_LIBRARY} pybind11::module)
