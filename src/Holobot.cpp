@@ -1,7 +1,6 @@
 #include <map>
 #include <iostream>
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include "Holobot.h"
@@ -24,17 +23,11 @@ namespace Metabot
     sent_dy = 0;
     sent_turn = 0;
     yaw0 = 0;
-    experiment_mode = true;
-    if (experiment_mode)
-      experiment_file = fopen("experiment.log", "w");
-    else
-      experiment_file = NULL;
   }
 
   Holobot::~Holobot() {
     control(0,0,0);
     usleep(500000);
-    if (experiment_file != NULL) fclose(experiment_file);
   }
 
   void Holobot::receive(Packet &packet) {
@@ -45,24 +38,12 @@ namespace Metabot
 	optics[i] = ((float) packet.readByte()) / 255;
       for (int i=0; i<3; i++)
 	wheel_speeds[i] = packet.readSmallFloat();
-      if (experiment_mode) {
-	for (int i=0; i<3; i++)
-	  wheel_speed_tgts[i] = packet.readSmallFloat();
-      }
       gyro_yaw = 10*packet.readSmallFloat();
       acc_x = 10*packet.readSmallFloat();
       acc_y = 10*packet.readSmallFloat();
       acc_z = 10*packet.readSmallFloat();
       current_time = (float) ((uint32_t) packet.readInt()) / 1000;
       if (output_state) print_state();
-
-      if (experiment_file != NULL) {
-	fprintf(experiment_file, "%f %f %f %f %f %f %f\n",
-		current_time,
-		wheel_speeds[0],wheel_speeds[1],wheel_speeds[2],
-		wheel_speed_tgts[0], wheel_speed_tgts[1], wheel_speed_tgts[2]);
-      }
-
       mutex.unlock();
     }
   }
@@ -162,8 +143,7 @@ namespace Metabot
   void Holobot::print_state() {
     printf("-------------------------------------------------------------------------------\n");
     printf("- time : %0.3fs\n", current_time);
-    printf("- wheel speeds(deg/s)    : %4.1f %4.1f %4.1f\n", wheel_speeds[0], wheel_speeds[1], wheel_speeds[2]);
-    printf("- wheel speed tgts(deg/s): %4.1f %4.1f %4.1f\n", wheel_speed_tgts[0], wheel_speed_tgts[1], wheel_speed_tgts[2]);
+    printf("- wheel speeds(deg/s): %4.1f %4.1f %4.1f\n", wheel_speeds[0], wheel_speeds[1], wheel_speeds[2]);
     printf("- opticals (%%):");
     for (int i=0; i<OPTICS_NB; i++) printf("%3.0f", 100*optics[i]);
     printf("\n");
