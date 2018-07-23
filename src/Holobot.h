@@ -4,7 +4,7 @@
 #define METABOT_MONITOR 5
 #define HOLOBOT_COMMAND 80
 
-#define OPTICS_NB 5
+#define OPTICS_NB 7
 
 namespace Metabot
 {
@@ -15,7 +15,7 @@ namespace Metabot
 	    float yaw0;
         public:
 	    float current_time; 
-	    float distances[3];
+	    float distance;
 	    float optics[OPTICS_NB];
 	    float wheel_speeds[3];
 	    float gyro_yaw;
@@ -29,11 +29,8 @@ namespace Metabot
 	    
 	    /* the time in seconds from the starting of the robot system */
 	    float get_time();
-	    /* distance sensors (cm), the sensors id are as follows:
-	     * 0 : the distance sensor at the bottom of the usb plug
-	     * 1 : the distance sensor of the switch (at the right of the robot, viewed from up) 
-	     * 2 : the left one */
-	    float get_dist(int i); 
+	    /* distance sensor (cm) */
+	    float get_dist(); 
 	    /* optical sensors, in [0,1] */
 	    float get_opt(int i); /* sensors are identified from 0 to 4, from right to left, viewed from up */
 	    /* yaw, relative to the start in degree, in trigonometric way from the upper view */
@@ -54,6 +51,9 @@ namespace Metabot
 	    /* rot_speed : deg / sec */
 	    void turn(float rot_speed);
 	    void stop_all();
+
+            /* Trigger opticals calibration */
+            void calibrate_opticals(bool black);
 
 	    void set_board_led(uint8_t state);
 	    void beep(short freq, short duration);

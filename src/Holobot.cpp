@@ -16,8 +16,8 @@ namespace Metabot
     usleep(250000);
     rhock_mode();
     usleep(250000);
-    printf("- monitoring at 20Hz\n");
-    monitor(20);
+    printf("- monitoring at 5Hz\n");
+    monitor(5);
     waitUpdate();
     sent_dx = 0;
     sent_dy = 0;
@@ -32,8 +32,7 @@ namespace Metabot
 
   void Holobot::receive(Packet &packet) {
     if (packet.type == METABOT_MONITOR) {
-      for (int i=0; i<3; i++)
-	distances[i] = packet.readSmallFloat();
+      distance = packet.readSmallFloat();
       for (int i=0; i<OPTICS_NB; i++) 
 	optics[i] = ((float) packet.readByte()) / 255;
       for (int i=0; i<3; i++)
@@ -42,7 +41,7 @@ namespace Metabot
       acc_x = 10*packet.readSmallFloat();
       acc_y = 10*packet.readSmallFloat();
       acc_z = 10*packet.readSmallFloat();
-      current_time = (float) ((uint32_t) packet.readInt()) / 1000;
+      current_time = (float) (((uint32_t) packet.readInt()) / 1000.0);
       if (output_state) print_state();
       mutex.unlock();
     }
@@ -53,9 +52,8 @@ namespace Metabot
     mutex.lock();
   }
 
-  float Holobot::get_dist(int i) {
-    if (i<0 || i>=3) return 0.0;
-    return distances[i];
+  float Holobot::get_dist() {
+      return distance;
   }
 
   float Holobot::get_opt(int i) {
@@ -119,6 +117,12 @@ namespace Metabot
     control(0, 0, 0);
   }
 
+  void Holobot::calibrate_opticals(bool black) {
+    Packet packet = command(5);
+    packet.appendByte(black ? 1 : 0);
+    send(packet);
+  }
+
   void Holobot::beep(short freq, short duration)
   {
     // TODO: attention aux limites
@@ -145,9 +149,9 @@ namespace Metabot
     printf("- time : %0.3fs\n", current_time);
     printf("- wheel speeds(deg/s): %4.1f %4.1f %4.1f\n", wheel_speeds[0], wheel_speeds[1], wheel_speeds[2]);
     printf("- opticals (%%):");
-    for (int i=0; i<OPTICS_NB; i++) printf("%3.0f", 100*optics[i]);
+    for (int i=0; i<OPTICS_NB; i++) printf(" %3.0f", 100*optics[i]);
     printf("\n");
-    printf("- distances (cm): %4.1f %4.1f %4.1f\n", distances[0], distances[1], distances[2]);
+    printf("- distance (cm): %4.1f\n", distance);
     printf("- gyro yaw (deg): %4.0f\n", gyro_yaw);
     printf("- accelerometer: X:%4.0f Y:%4.0f Z:%4.0f\n", acc_x, acc_y, acc_z); 
   }
