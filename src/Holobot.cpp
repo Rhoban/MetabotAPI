@@ -34,9 +34,9 @@ namespace Metabot
     if (packet.type == METABOT_MONITOR) {
       distance = packet.readSmallFloat();
       for (int i=0; i<OPTICS_NB; i++) 
-	optics[i] = ((float) packet.readByte()) / 255;
+        optics[i] = ((float) packet.readByte()) / 255;
       for (int i=0; i<3; i++)
-	wheel_speeds[i] = packet.readSmallFloat();
+        wheel_speeds[i] = packet.readSmallFloat();
       gyro_yaw = 10*packet.readSmallFloat();
       acc_x = 10*packet.readSmallFloat();
       acc_y = 10*packet.readSmallFloat();
