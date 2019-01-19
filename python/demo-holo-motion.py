@@ -3,7 +3,7 @@
 
 # To build the Holobot module, please refer to the project README
 # command to launch the demo :
-# PYTHONPATH=. python ../demo-holo-motion.py
+# sudo PYTHONPATH=. python ../demo-holo-motion.py <bluetooth path>
 
 from holobot import Holobot
 import time
