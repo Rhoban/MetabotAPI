@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 2.8)
 project(MetabotAPI)
 
-find_package(PythonInterp)
-find_package(PythonLibs ${PYTHON_VERSION_STRING})
-set(PYTHON_MODULE_EXTENSION .so)
+if(LINUX) 
+  find_package(PythonInterp)
+  find_package(PythonLibs)
+  set(PYTHON_MODULE_EXTENSION .so)
+endif()
 
 # Vendors
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/../src/" metabot)

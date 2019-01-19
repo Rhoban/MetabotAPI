@@ -53,4 +53,6 @@ You can add the following line in your .bashrc (linux) to add the *.so to the py
 
     export PYTHONPATH="${PYTHONPATH}:/path/to/MetabotAPI/python/"
 
-
+Under Mac OS X:
+      
+    cmake -DPYTHON_EXECUTABLE=/usr/local/bin/python ..
