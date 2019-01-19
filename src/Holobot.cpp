@@ -1,7 +1,6 @@
 #include <map>
 #include <iostream>
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include "Holobot.h"
@@ -24,46 +23,26 @@ namespace Metabot
     sent_dy = 0;
     sent_turn = 0;
     yaw0 = 0;
-    experiment_mode = false;
-    if (experiment_mode)
-      experiment_file = fopen("experiment.log", "w");
-    else
-      experiment_file = NULL;
   }
 
   Holobot::~Holobot() {
     control(0,0,0);
     usleep(500000);
-    if (experiment_file != NULL) fclose(experiment_file);
   }
 
   void Holobot::receive(Packet &packet) {
     if (packet.type == METABOT_MONITOR) {
-      // for (int i=0; i<3; i++)
-      distances[0] = packet.readSmallFloat();
-      distances[1] = -1; // txmp
-      distances[2] = -1; // tmp
+      distance = packet.readSmallFloat();
       for (int i=0; i<OPTICS_NB; i++) 
-	optics[i] = ((float) packet.readByte()) / 255;
+        optics[i] = ((float) packet.readByte()) / 255;
       for (int i=0; i<3; i++)
-	wheel_speeds[i] = packet.readSmallFloat();
-      if (experiment_mode) {
-	for (int i=0; i<3; i++)
-	  wheel_speed_tgts[i] = packet.readSmallFloat();
-      }
+        wheel_speeds[i] = packet.readSmallFloat();
       gyro_yaw = 10*packet.readSmallFloat();
       acc_x = 10*packet.readSmallFloat();
       acc_y = 10*packet.readSmallFloat();
       acc_z = 10*packet.readSmallFloat();
-      current_time = (float) ((uint32_t) packet.readInt()) / 1000;
+      current_time = (float) (((uint32_t) packet.readInt()) / 1000.0);
       if (output_state) print_state();
-      if (experiment_file != NULL) {
-	fprintf(experiment_file, "%f %f %f %f %f %f %f\n",
-		current_time,
-		wheel_speeds[0],wheel_speeds[1],wheel_speeds[2],
-		wheel_speed_tgts[0], wheel_speed_tgts[1], wheel_speed_tgts[2]);
-      }
-
       mutex.unlock();
     }
   }
@@ -73,9 +52,8 @@ namespace Metabot
     mutex.lock();
   }
 
-  float Holobot::get_dist(int i) {
-    if (i<0 || i>=3) return 0.0;
-    return distances[i];
+  float Holobot::get_dist() {
+      return distance;
   }
 
   float Holobot::get_opt(int i) {
@@ -139,6 +117,12 @@ namespace Metabot
     control(0, 0, 0);
   }
 
+  void Holobot::calibrate_opticals(bool black) {
+    Packet packet = command(5);
+    packet.appendByte(black ? 1 : 0);
+    send(packet);
+  }
+
   void Holobot::beep(short freq, short duration)
   {
     // TODO: attention aux limites
@@ -163,12 +147,11 @@ namespace Metabot
   void Holobot::print_state() {
     printf("-------------------------------------------------------------------------------\n");
     printf("- time : %0.3fs\n", current_time);
-    printf("- wheel speeds(deg/s)    : %4.1f %4.1f %4.1f\n", wheel_speeds[0], wheel_speeds[1], wheel_speeds[2]);
-    printf("- wheel speed tgts(deg/s): %4.1f %4.1f %4.1f\n", wheel_speed_tgts[0], wheel_speed_tgts[1], wheel_speed_tgts[2]);
+    printf("- wheel speeds(deg/s): %4.1f %4.1f %4.1f\n", wheel_speeds[0], wheel_speeds[1], wheel_speeds[2]);
     printf("- opticals (%%):");
     for (int i=0; i<OPTICS_NB; i++) printf("%3.2f ", 100*optics[i]);
     printf("\n");
-    printf("- distances (cm): %4.1f %4.1f %4.1f\n", distances[0], distances[1], distances[2]);
+    printf("- distance (cm): %4.1f\n", distance);
     printf("- gyro yaw (deg): %4.0f\n", gyro_yaw);
     printf("- accelerometer: X:%4.0f Y:%4.0f Z:%4.0f\n", acc_x, acc_y, acc_z); 
   }

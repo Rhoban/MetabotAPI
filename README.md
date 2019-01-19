@@ -11,6 +11,7 @@ the `cpp/` directory:
     mkdir build
     cd build
     cmake ..
+    make
     ./metabot
 
 The `main.cpp` and the `CMakeLists.txt` provide a way to produce a binary that will
@@ -41,6 +42,7 @@ example, you can run the `demo.py` script from the build directory:
     PYTHONPATH=`pwd` python ../demo.py
 
 You can add the following line in your .bashrc (linux) to add the *.so to the python path:
-export PYTHONPATH="${PYTHONPATH}:/path/to/MetabotAPI/python/"
+
+    export PYTHONPATH="${PYTHONPATH}:/path/to/MetabotAPI/python/"
 
 

@@ -9,7 +9,6 @@ from holobot import Holobot
 import time
 
 holo = Holobot('/dev/tty.holo-DevB', 115200)
-#holo = Holobot('/dev/cu.HOLO1-DevB', 115200)
 holo.debug_state(1)
 while True:
     try:
