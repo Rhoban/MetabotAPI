@@ -6,7 +6,7 @@
 #define METABOT_MONITOR 5
 #define HOLOBOT_COMMAND 80
 
-#define OPTICS_NB 5
+#define OPTICS_NB 7
 
 namespace Metabot
 {

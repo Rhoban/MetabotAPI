@@ -11,28 +11,30 @@ import sys
 import math
 
 holo = Holobot('/dev/tty.holo-DevB', 115200)
+# holo = Holobot('/dev/cu.HOLO1-DevB', 57600)
+speed = 100
 
 holo.beep(880, 200)
     
 ## 4 directions ##
 
 for angle in [0, 90, 180, -90]:
-    holo.move_toward(40, angle)
+    holo.move_toward(speed, angle)
     time.sleep(1.0)
     holo.stop_all()
     time.sleep(0.25)
-    holo.move_toward(-40, angle)
+    holo.move_toward(-speed, angle)
     time.sleep(1.0)
     holo.stop_all()
     time.sleep(0.25)
 
 ## Rotation ##
         
-holo.control(0,0,40)
+holo.control(0,0,speed)
 time.sleep(1)
 holo.stop_all()
 time.sleep(0.250)
-holo.control(0,0,-40)
+holo.control(0,0,-speed)
 time.sleep(1)
 
 ## Cercle ##
@@ -61,11 +63,11 @@ while t < 4.0:
 
     corr_f = 4.2
     if t < 2.0:
-        holo.move_toward(40, -corr_f*dir)
+        holo.move_toward(speed, -corr_f*dir)
     else:
-        holo.move_toward(-40, -corr_f*dir)
+        holo.move_toward(-speed, -corr_f*dir)
     # z = math.sin(2*math.pi * t/1.5)
-    # holo.turn(40*z)
+    # holo.turn(speed*z)
     t += dt
     time.sleep(dt) # 20Hz
     

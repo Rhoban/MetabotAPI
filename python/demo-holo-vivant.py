@@ -27,7 +27,7 @@ while True:
             holo.beep(880,200)
             dt = 0.05
             for n in range(20):
-                holo.turn(60*math.sin(10*n*dt))
+                holo.turn(30*math.sin(10*n*dt))
                 time.sleep(dt)
             holo.stop_all()
             time.sleep(1)

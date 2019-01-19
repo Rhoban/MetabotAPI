@@ -10,38 +10,40 @@ from holobot import Holobot
 import time
 import math
 
-holo = Holobot('/dev/tty.holo-DevB', 115200)
+holo = Holobot('/dev/cu.holo-DevB', 115200)
 print("- prise de mesure en cours")
 print("<tapper Ctrl-C pour arreter>")
 
 holo.reset_yaw()
 distances = []
 while True:
+    holo.turn(90)
     try:
-        t = holo.get_time()
-        if int(0.75*t)%2 == 0:
-            holo.turn(30)
-        else:
-            holo.turn(-30)
-        az = holo.get_yaw()
-        distances.append([math.fmod(az+60.0, 360.0), holo.get_dist(2)])
-        distances.append([math.fmod(az+180.0,360.0), holo.get_dist(0)])
-        distances.append([math.fmod(az+300.0, 360.0), holo.get_dist(1)])
-        time.sleep(0.1)
+        d = holo.get_dist(1)
+        d = 12.0 + (d-7.0)*8.0/10.0
+        if d <= 20:
+            t = holo.get_time()
+            az = holo.get_yaw()
+            while az < -180.0: az = az + 360.0
+            while az > 180.0: az = az - 360.0
+            distances.append([az, holo.get_dist(1)+3.0])
+        time.sleep(0.05)
     except KeyboardInterrupt:
         break
 
 holo.stop_all()
 
-X = []
-Y = []
-for c in distances:
-    a = c[0]*math.pi/180 + math.pi/2
-    d = c[1]
-    if d < 20:
-        X.append(d*math.cos(a))
-        Y.append(d*math.sin(a))
-
 plt.grid()
+plt.xlim([-50,50])
+plt.ylim([-50,50])
+
+X = [0.0]
+Y = [0.0]
+for c in distances:
+    a = c[0]*math.pi/180.0
+    d = c[1]
+    X.append(d * math.cos(-a))
+    Y.append(d * math.sin(-a))
+
 plt.scatter(X,Y)
 plt.show()

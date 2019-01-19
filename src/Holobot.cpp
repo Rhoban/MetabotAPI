@@ -24,7 +24,7 @@ namespace Metabot
     sent_dy = 0;
     sent_turn = 0;
     yaw0 = 0;
-    experiment_mode = true;
+    experiment_mode = false;
     if (experiment_mode)
       experiment_file = fopen("experiment.log", "w");
     else
@@ -39,8 +39,10 @@ namespace Metabot
 
   void Holobot::receive(Packet &packet) {
     if (packet.type == METABOT_MONITOR) {
-      for (int i=0; i<3; i++)
-	distances[i] = packet.readSmallFloat();
+      // for (int i=0; i<3; i++)
+      distances[0] = packet.readSmallFloat();
+      distances[1] = -1; // txmp
+      distances[2] = -1; // tmp
       for (int i=0; i<OPTICS_NB; i++) 
 	optics[i] = ((float) packet.readByte()) / 255;
       for (int i=0; i<3; i++)
@@ -55,7 +57,6 @@ namespace Metabot
       acc_z = 10*packet.readSmallFloat();
       current_time = (float) ((uint32_t) packet.readInt()) / 1000;
       if (output_state) print_state();
-
       if (experiment_file != NULL) {
 	fprintf(experiment_file, "%f %f %f %f %f %f %f\n",
 		current_time,
@@ -165,7 +166,7 @@ namespace Metabot
     printf("- wheel speeds(deg/s)    : %4.1f %4.1f %4.1f\n", wheel_speeds[0], wheel_speeds[1], wheel_speeds[2]);
     printf("- wheel speed tgts(deg/s): %4.1f %4.1f %4.1f\n", wheel_speed_tgts[0], wheel_speed_tgts[1], wheel_speed_tgts[2]);
     printf("- opticals (%%):");
-    for (int i=0; i<OPTICS_NB; i++) printf("%3.0f", 100*optics[i]);
+    for (int i=0; i<OPTICS_NB; i++) printf("%3.2f ", 100*optics[i]);
     printf("\n");
     printf("- distances (cm): %4.1f %4.1f %4.1f\n", distances[0], distances[1], distances[2]);
     printf("- gyro yaw (deg): %4.0f\n", gyro_yaw);

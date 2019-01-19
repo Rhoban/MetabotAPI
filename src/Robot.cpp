@@ -23,6 +23,7 @@ namespace Metabot
             delete thread;
             thread = NULL;
         }
+	port.close();
     }
 
     void Robot::send(Packet &packet)
