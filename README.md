@@ -2,6 +2,14 @@
 
 Control metabot robots using API. This will work both in USB and bluetooth.
 
+## Bluetooth under linux
+   sudo apt-get install blueman
+   sudo blueman-manager
+   - click droit sur le periphérique bluetooth corresponding to the robot
+   - "connect to serial port"
+   - the robot bluetooth entry should appear in /dev/
+     for instance under the name rfcomm0 (it may vary).
+
 ## Using the C++ Library
 
 The best way to learn how to use it is to have a look at the example provided in

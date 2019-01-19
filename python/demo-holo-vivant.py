@@ -8,8 +8,14 @@
 from holobot import Holobot
 import time
 import math
+import sys
 
-holo = Holobot('/dev/tty.holo-DevB', 115200)
+if len(sys.argv) != 2:
+    print ("error: I need the bluetooth port")
+    sys.exit(0)
+
+holo = Holobot(sys.argv[1], 115200)
+
 print("<tapper Ctrl-C pour arreter>")
 holo.reset_yaw()
 

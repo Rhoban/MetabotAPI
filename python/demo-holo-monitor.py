@@ -3,12 +3,17 @@
 
 # To build the Holobot module, please refer to the project README
 # command to launch the demo :
-# PYTHONPATH=. python ../demo-holo-monitor.py
+# PYTHONPATH=. python ../demo-holo-monitor.py <bluetooth port>
  
 from holobot import Holobot
 import time
+import sys
 
-holo = Holobot('/dev/tty.holo-DevB', 115200)
+if len(sys.argv) != 2:
+    print ("error: I need the bluetooth port")
+    sys.exit(0)
+
+holo = Holobot(sys.argv[1], 115200)
 holo.debug_state(1)
 while True:
     try:
