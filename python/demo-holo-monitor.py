@@ -14,6 +14,9 @@ if len(sys.argv) != 2:
     sys.exit(0)
 
 holo = Holobot(sys.argv[1], 115200)
+holo.calibrate_magneto()
+time.sleep(10)
+
 holo.debug_state(1)
 while True:
     try:

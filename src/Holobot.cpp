@@ -140,6 +140,12 @@ namespace Metabot
     send(packet);
   }
 
+  void Holobot::calibrate_magneto()
+  {
+    Packet packet = command(6);
+    send(packet);
+  }
+
   float Holobot::get_wheel_speeds(int id) {
     return wheel_speeds[id];
   }

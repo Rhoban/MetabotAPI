@@ -25,6 +25,7 @@ PYBIND11_PLUGIN(holobot) {
         .def("turn", &Holobot::turn)
         .def("stop_all", &Holobot::stop_all)
         .def("beep", &Holobot::beep)
+        .def("calibrate_magneto", &Holobot::calibrate_magneto)
         .def("play", &Holobot::play)
       
         .def("get_time", &Holobot::get_time)

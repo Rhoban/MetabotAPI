@@ -54,7 +54,8 @@ namespace Metabot
 
             /* Trigger opticals calibration */
             void calibrate_opticals(bool black);
-
+	    /* Calibrate the magneto by rotating the robot */
+	    void calibrate_magneto();
 	    void set_board_led(uint8_t state);
 	    void beep(short freq, short duration);
 	    void play(short id);
