@@ -9,8 +9,13 @@ import matplotlib.pyplot as plt
 from holobot import Holobot
 import time
 import math
+import sys
 
-holo = Holobot('/dev/cu.holo-DevB', 115200)
+if len(sys.argv) != 2:
+    print ("error: I need the bluetooth port")
+    sys.exit(0)
+
+holo = Holobot(sys.argv[1], 115200)
 print("- prise de mesure en cours")
 print("<tapper Ctrl-C pour arreter>")
 
