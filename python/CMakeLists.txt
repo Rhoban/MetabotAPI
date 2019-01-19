@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 2.8)
 project(MetabotAPI)
 
-if(LINUX) 
+if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  message("compilation under linux")
   find_package(PythonInterp)
   find_package(PythonLibs)
   set(PYTHON_MODULE_EXTENSION .so)
-endif()
+endif ()
 
 # Vendors
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/../src/" metabot)
