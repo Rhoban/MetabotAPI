@@ -61,5 +61,9 @@ namespace Metabot
 	    void play(short id);
 	    void print_state();
 	    void debug_state(uint8_t on_or_off);
+
+            /* Leds control */
+            void set_leds(uint8_t red, uint8_t blue, uint8_t green);
+            void leds_breath();
     };
 }

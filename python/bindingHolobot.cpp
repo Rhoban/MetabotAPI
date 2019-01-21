@@ -36,6 +36,8 @@ PYBIND11_PLUGIN(holobot) {
         .def("reset_yaw", &Holobot::reset_yaw)
         .def("print_state", &Holobot::print_state)
         .def("debug_state", &Holobot::debug_state)
+        .def("set_leds", &Holobot::set_leds)
+        .def("leds_breath", &Holobot::leds_breath)
         .def_readonly("current_time", &Holobot::current_time)
         ;
 

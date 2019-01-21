@@ -16,8 +16,8 @@ namespace Metabot
     usleep(250000);
     rhock_mode();
     usleep(250000);
-    printf("- monitoring at 20Hz\n");
-    monitor(20);
+    printf("- monitoring at 10Hz\n");
+    monitor(10);
     waitUpdate();
     sent_dx = 0;
     sent_dy = 0;
@@ -164,6 +164,19 @@ namespace Metabot
 
   void Holobot::debug_state(uint8_t on_or_off) {
     output_state = (bool) on_or_off;
+  }
+
+  void Holobot::set_leds(uint8_t red, uint8_t green, uint8_t blue) {
+      Packet packet = command(7);
+      packet.appendByte(red);
+      packet.appendByte(green);
+      packet.appendByte(blue);
+      send(packet);
+  }
+
+  void Holobot::leds_breath() {
+      Packet packet = command(8);
+      send(packet);
   }
 }
 
