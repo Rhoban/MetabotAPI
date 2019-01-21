@@ -31,6 +31,7 @@ PYBIND11_PLUGIN(holobot) {
         .def("get_time", &Holobot::get_time)
         .def("get_dist", &Holobot::get_dist)
         .def("get_opt", &Holobot::get_opt)
+        .def("get_opts", &Holobot::get_opts)
         .def("get_yaw", &Holobot::get_yaw)
         .def("get_wheel_speeds", &Holobot::get_wheel_speeds)
         .def("reset_yaw", &Holobot::reset_yaw)

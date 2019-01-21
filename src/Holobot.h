@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "Robot.h"
 
 #define METABOT_MONITOR 5
@@ -33,6 +34,7 @@ namespace Metabot
 	    float get_dist(); 
 	    /* optical sensors, in [0,1] */
 	    float get_opt(int i); /* sensors are identified from 0 to 4, from right to left, viewed from up */
+            std::vector<float> get_opts();
 	    /* yaw, relative to the start in degree, in trigonometric way from the upper view */
 	    float get_yaw(); /* the yaw computed from the gyro, more precise than the magnetic yaw, but drift (several degree/mn) */
 	    /* set the current yaw to be the yaw 0.0 deg (as yaw is computed from the gyro, it is relative */

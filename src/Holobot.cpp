@@ -16,8 +16,8 @@ namespace Metabot
     usleep(250000);
     rhock_mode();
     usleep(250000);
-    printf("- monitoring at 10Hz\n");
-    monitor(10);
+    printf("- monitoring at 20Hz\n");
+    monitor(20);
     waitUpdate();
     sent_dx = 0;
     sent_dy = 0;
@@ -59,6 +59,14 @@ namespace Metabot
   float Holobot::get_opt(int i) {
     if (i<0 || i>=OPTICS_NB) return 0.0;
     return optics[i];
+  }
+
+  std::vector<float> Holobot::get_opts() {
+      std::vector<float> opts;
+      for (int k=0; k<OPTICS_NB; k++) {
+          opts.push_back(get_opt(k));
+      }
+      return opts;
   }
 
   void Holobot::reset_yaw() {
