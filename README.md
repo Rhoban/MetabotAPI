@@ -56,3 +56,35 @@ You can add the following line in your .bashrc (linux) to add the *.so to the py
 Under Mac OS X:
       
     cmake -DPYTHON_EXECUTABLE=/usr/local/bin/python ..
+
+Installation of metabotapi for Holobot:
+---------------------------------------
+
+[tested on Raspberry Pi 3]
+
+requirement:
+- git
+- cmake
+- pythonXX-dev
+
+> git clone  https://github.com/Rhoban/metabotapi.git
+> cd metabotapi/src
+> mkdir build
+> cd build
+> cmake ../.
+> cd ../../python
+> mkdir build
+> cd build
+> cmake ../.
+> make
+
+installation of a udev rule in order to fix the name of the device in /dev directory
+> sudo usermod -a -G plugdev $USER
+> sudo usermod -a -G dialout $USER
+> sudo cp scripts/45-holobot.rules /etc/udev/rules.d/
+
+> sudo service udev restart
+ou
+> sudo restart udev
+
+after that, pluggin the holobot should make it appear under the name /dev/holobot

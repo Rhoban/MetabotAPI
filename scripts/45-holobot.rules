@@ -1,0 +1,1 @@
+ATTRS{idProduct}=="ff48", ATTRS{idVendor}=="fff1", MODE="664", GROUP="plugdev" SYMLINK+="holobot"
