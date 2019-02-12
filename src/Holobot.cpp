@@ -16,7 +16,7 @@ namespace Metabot
     usleep(250000);
     rhock_mode();
     usleep(250000);
-    printf("- monitoring at 20Hz\n");
+    if (verbose>0) printf("- monitoring at 20Hz\n");
     monitor(20);
     waitUpdate();
     sent_dx = 0;
@@ -166,7 +166,7 @@ namespace Metabot
     for (int i=0; i<OPTICS_NB; i++) printf("%3.2f ", 100*optics[i]);
     printf("\n");
     printf("- distance (cm): %4.1f\n", distance);
-    printf("- gyro yaw (deg): %4.0f\n", gyro_yaw);
+    printf("- gyro yaw (deg): %4.1f\n", gyro_yaw);
     printf("- accelerometer: X:%4.0f Y:%4.0f Z:%4.0f\n", acc_x, acc_y, acc_z); 
   }
 

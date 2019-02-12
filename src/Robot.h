@@ -16,14 +16,16 @@ namespace Metabot
             virtual ~Robot();
             
             void monitor(int frequency);
-	    void rhock_mode();
+            void rhock_mode();
 
             void send(Packet &packet);
             virtual void receive(Packet &packet);
             void process();
-
+            void set_verbose(int level);
+              
         protected:
             bool over;
+			int verbose;
             serial::Serial port;
             std::thread *thread;
             std::mutex mutex;

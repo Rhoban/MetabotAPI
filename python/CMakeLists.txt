@@ -19,8 +19,8 @@ include_directories (vendor/pybind11/include/)
 set (CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wno-reorder -pedantic")
 
 # Building the python binding
-pybind11_add_module (metabot ${METABOT_SOURCES} binding.cpp)
+pybind11_add_module (metabot ${METABOT_SOURCES} binding/binding.cpp)
 target_link_libraries (metabot LibMetabot ${PYTHON_LIBRARY} pybind11::module)
 
-pybind11_add_module (holobot ${HOLO_SOURCES} bindingHolobot.cpp)
+pybind11_add_module (holobot ${HOLO_SOURCES} binding/bindingHolobot.cpp)
 target_link_libraries (holobot LibMetabot ${PYTHON_LIBRARY} pybind11::module)

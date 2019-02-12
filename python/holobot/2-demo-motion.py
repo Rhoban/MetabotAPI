@@ -1,9 +1,8 @@
-#!/usr/bin/python
 # coding: utf8
 
 # To build the Holobot module, please refer to the project README
-# command to launch the demo :
-# sudo PYTHONPATH=. python ../demo-holo-motion.py <bluetooth path>
+# Go to your build directory and run the following command 
+# python3 ../holobot/2-demo-motion.py <serial port>
 
 from holobot import Holobot
 import time
@@ -15,16 +14,18 @@ if len(sys.argv) != 2:
     sys.exit(0)
 
 holo = Holobot(sys.argv[1], 115200)
-speed = 100
+speed = 50
 
 holo.beep(880, 200)
-    
+
 ## 4 directions ##
 
 for angle in [0, 90, 180, -90]:
-    holo.move_toward(speed, angle)
+    # motion is defined by giving the instantaneous velocity, linear and rotational
+    holo.move_toward(speed, angle) # move at <speed> mm/s toward direction <angle> deg
+                                   # rotational velocity is not modified here.
     time.sleep(1.0)
-    holo.stop_all()
+    holo.stop_all() # stop motors
     time.sleep(0.25)
     holo.move_toward(-speed, angle)
     time.sleep(1.0)
@@ -32,8 +33,10 @@ for angle in [0, 90, 180, -90]:
     time.sleep(0.25)
 
 ## Rotation ##
-        
-holo.control(0,0,speed)
+
+# the function control(dx,dy,rot) define the instantaneous speed in the X,Y
+# directions <dx,dy> in mm/s and the rotation speed <rot> in deg/s.
+holo.control(0,0,speed) # here one defines the rotational velocity, linear velocity is fixed to 0
 time.sleep(1)
 holo.stop_all()
 time.sleep(0.250)
@@ -53,7 +56,7 @@ while t < 4.0:
 
 holo.stop_all()
 time.sleep(1.0)
-## Mouvement combiné ##
+## Combine motions ##
 
 t = 0.0
 dt = 0.050
@@ -61,12 +64,14 @@ dir = 0
 while t < 4.0:
     if (int(0.5*t)) % 2: rot = 23
     else: rot = -23
-    holo.turn(rot)
+    holo.turn(rot) # defines the instantaneous rotation velocity (°/s)
+                   # linear velocity is not modified  
     dir += rot*dt
 
     corr_f = 4.2
     if t < 2.0:
-        holo.move_toward(speed, -corr_f*dir)
+        holo.move_toward(speed, -corr_f*dir) # defines the linear velocity,
+                                             # rotational velocity is not modified
     else:
         holo.move_toward(-speed, -corr_f*dir)
     # z = math.sin(2*math.pi * t/1.5)

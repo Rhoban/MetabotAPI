@@ -6,7 +6,7 @@
 namespace Metabot
 {
     Robot::Robot(std::string name, int baud)
-        : port(name, baud, serial::Timeout::simpleTimeout(1000)), over(false)
+	  : port(name, baud, serial::Timeout::simpleTimeout(1000)), over(false), verbose(0)
     {
         mutex.lock();
         thread = new std::thread([this]() {
@@ -26,6 +26,10 @@ namespace Metabot
 	port.close();
     }
 
+    void Robot::set_verbose(int level) {
+      verbose = level;
+    }
+  
     void Robot::send(Packet &packet)
     {
         std::string raw = packet.toRaw();
@@ -43,7 +47,7 @@ namespace Metabot
     }
 
     void Robot::rhock_mode() {
-      printf("- requesting rhock mode\n");
+      if (verbose>0) printf("- requesting rhock mode\n");
       port.write("rhock\nrhock\nrhock\n");    
     }
 
@@ -56,7 +60,7 @@ namespace Metabot
         monitor(0);
         mutex.unlock();
 
-	printf("- listening to robot\n");
+		if (verbose>0) printf("- listening to robot\n");
         int state = 0;
         int type = 0;
         int size = 0;
