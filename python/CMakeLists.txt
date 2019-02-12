@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 project(MetabotAPI)
 
-# set(bindings_python_version 3.5)
-# add_subdirectory(pythonbinding pythonbindings35)
-
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   message("compilation under linux")
   find_package(PythonInterp 3.0 REQUIRED)

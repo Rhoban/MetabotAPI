@@ -1,11 +1,35 @@
 # MetabotAPI
 
-Control metabot robots using API. This will work both in USB and bluetooth.
+Control metabot or holobot robots using API. This will work both in
+USB and bluetooth.
 
-## Bluetooth under linux
-   sudo apt-get install blueman
-   sudo blueman-manager
-   - click droit sur le periphérique bluetooth corresponding to the robot
+## Connexion
+
+There are two possible ways to connect the computer to the robot:
+
+1. *By wire.* The robot is connected to the computer by a USB cable
+connected to the robot by the USB B plug. After that, the robot shoud appear on the computer 
+
+TODO: udev rule ?
+
+2. *By bluetooth.* Robot bluetooth connexion is available
+directly. One must apair the robot as a bluetooth device.The connexion
+code is 0000 or 1234. Under linux, the easiest way it to use the
+blueman utility which offers a GUI.
+
+Under windows or Mac OS X, one must connect the robot as an other
+bluetooth device.
+
+After this step, the robot must appear as a serial interface. Under
+linux it can be something like /dev/rfcomm0 for bluetooth or /dev/ACM0
+if the robot is wired. Under windows, it will appear as a COM
+port. Under Mac OS X, it will appear as /dev/tty.usb<something>.
+
+Details under linux:
+
+   > sudo apt-get install blueman
+   > sudo blueman-manager
+   - right click on the bluetooth device corresponding to the robot
    - "connect to serial port"
    - the robot bluetooth entry should appear in /dev/
      for instance under the name rfcomm0 (it may vary).
@@ -15,7 +39,7 @@ Control metabot robots using API. This will work both in USB and bluetooth.
 The best way to learn how to use it is to have a look at the example provided in
 the `cpp/` directory:
 
-    cd cpp/
+    cd cpp
     mkdir build
     cd build
     cmake ..
@@ -27,12 +51,14 @@ communicate with the robot.
 
 ## Using the python library
 
-Note that you need to install the `pythonXX-dev` packages (replace XX with your
-version of python you want to use).
+You need to install the `pythonXX-dev` packages (replace XX with your
+version of python you want to use). For instance:
+    sudo apt-get install python3-dev
+for python3
 
 First, you will need to compile the native library, for this:
 
-    cd python/
+    cd python
     mkdir build
     cd build
     cmake ..
@@ -43,13 +69,19 @@ this instead:
 
     cmake -DPYTHON_EXECUTABLE=/usr/bin/python ..
 
-Then, this will produce a `.so` file (`metabot.so` or `metabot.cpython-....so`), this
-should be in your `PYTHON_PATH` (or in the directory where you run python command). For
-example, you can run the `demo.py` script from the build directory:
+We recommand to use python3 as python2 is going to be not maintained
+anymore. However, if you want to use python2, it is possible, change
+the need python version in CMakelist.txt at lines 6 and 7.
+
+Then, this will produce a `.so` file (`holobot.so`, `metabot.so` or
+`metabot.cpython-....so`), this should be in your `PYTHONPATH` (or in
+the directory where you run python command). For example, you can run
+the `demo.py` script from the build directory:
 
     PYTHONPATH=`pwd` python ../demo.py
 
-You can add the following line in your .bashrc (linux) to add the *.so to the python path:
+You can add the following line in your .bashrc (linux) to add the *.so
+to the python path:
 
     export PYTHONPATH="${PYTHONPATH}:/path/to/MetabotAPI/python/"
 
@@ -57,34 +89,12 @@ Under Mac OS X:
       
     cmake -DPYTHON_EXECUTABLE=/usr/local/bin/python ..
 
-Installation of metabotapi for Holobot:
----------------------------------------
-
-[tested on Raspberry Pi 3]
-
-requirement:
-- git
-- cmake
-- pythonXX-dev
-
-> git clone  https://github.com/Rhoban/metabotapi.git
-> cd metabotapi/src
-> mkdir build
-> cd build
-> cmake ../.
-> cd ../../python
-> mkdir build
-> cd build
-> cmake ../.
-> make
-
 installation of a udev rule in order to fix the name of the device in /dev directory
-> sudo usermod -a -G plugdev $USER
-> sudo usermod -a -G dialout $USER
-> sudo cp scripts/45-holobot.rules /etc/udev/rules.d/
-
-> sudo service udev restart
-ou
-> sudo restart udev
+    sudo usermod -a -G plugdev $USER
+    sudo usermod -a -G dialout $USER
+    sudo cp scripts/45-holobot.rules /etc/udev/rules.d/
+    sudo service udev restart
+      [or, depending on the distribution linux]	 
+    sudo restart udev
 
 after that, pluggin the holobot should make it appear under the name /dev/holobot
