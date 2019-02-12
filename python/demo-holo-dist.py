@@ -12,7 +12,7 @@ import math
 import sys
 
 if len(sys.argv) != 2:
-    print ("error: I need the bluetooth port")
+    print ("error: I need the serial port (bluetooth or wired)")
     sys.exit(0)
 
 holo = Holobot(sys.argv[1], 115200)

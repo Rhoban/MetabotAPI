@@ -15,25 +15,40 @@ set (METABOT_HEADERS "${CMAKE_CURRENT_SOURCE_DIR};${SERIAL_HEADERS}" CACHE STRIN
 set (CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wno-reorder -pedantic")
 
 # API source
-set (SOURCES
+set (SOURCES_META
     Robot.cpp
     MetabotV2.cpp
+    Packet.cpp)
+
+set (SOURCES_HOLO
+    Robot.cpp
     Holobot.cpp
-    Packet.cpp
-    )
+    Packet.cpp)
 
-set (FULL_SOURCES)
+set (FULL_SOURCES_META)
 
-foreach (SOURCE ${SOURCES})
-    set (FULL_SOURCES ${FULL_SOURCES} "${CMAKE_CURRENT_SOURCE_DIR}/${SOURCE}")
+foreach (SOURCE ${SOURCES_META})
+    set (FULL_SOURCES_META ${FULL_SOURCES_META} "${CMAKE_CURRENT_SOURCE_DIR}/${SOURCE}")
 endforeach ()
 
-set (METABOT_SOURCES ${FULL_SOURCES} CACHE STRING
+set (METABOT_SOURCES ${FULL_SOURCES_META} CACHE STRING
     "Metabot source files")
 
 set (METABOT_LIBS serial CACHE STRING
-    "Metabot libraries")
+  "Metabot libraries")
+
+set (FULL_SOURCES_HOLO)
+foreach (SOURCE ${SOURCES_HOLO})
+    set (FULL_SOURCES_HOLO ${FULL_SOURCES_HOLO} "${CMAKE_CURRENT_SOURCE_DIR}/${SOURCE}")
+endforeach ()
 
 # Building Metabot library
 add_library (LibMetabot ${METABOT_SOURCES})
 target_link_libraries (LibMetabot ${METABOT_LIBS})
+
+set (HOLO_SOURCES ${FULL_SOURCES_HOLO} CACHE STRING
+    "Holobot source files")
+
+set (HOLO_LIBS serial CACHE STRING
+    "Holobot libraries")
+
