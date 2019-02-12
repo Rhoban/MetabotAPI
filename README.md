@@ -10,8 +10,6 @@ There are two possible ways to connect the computer to the robot:
 1. *By wire.* The robot is connected to the computer by a USB cable
 connected to the robot by the USB B plug. After that, the robot shoud appear on the computer 
 
-TODO: udev rule ?
-
 2. *By bluetooth.* Robot bluetooth connexion is available
 directly. One must apair the robot as a bluetooth device.The connexion
 code is 0000 or 1234. Under linux, the easiest way it to use the
