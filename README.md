@@ -73,8 +73,11 @@ the need python version in CMakelist.txt at lines 6 and 7.
 
 Then, this will produce a `.so` file (`holobot.so`, `metabot.so` or
 `metabot.cpython-....so`), this should be in your `PYTHONPATH` (or in
-the directory where you run python command). For example, you can run
-the `demo.py` script from the build directory:
+the directory where you run python command).
+
+### Metabot robot
+
+You can run the `demo.py` script from the build directory:
 
     PYTHONPATH=`pwd` python ../demo.py
 
@@ -86,6 +89,20 @@ to the python path:
 Under Mac OS X:
       
     cmake -DPYTHON_EXECUTABLE=/usr/local/bin/python ..
+
+### Holobot robot
+
+Go to the python directory, in your build directory.
+Then launch the following command:
+
+     python3 ../holobot/1-demo-first.py <holobot port>
+
+where <holobot port> is the port of the robot (something like
+/dev/ACM0 if wired or /dev/rfcomm0 if bluetooth connexion). Look after
+in order to add a udev rule.
+
+The python/holobot/ directory contains examples of python control code
+in order to start.
 
 ## Linux: Automatic detection of the device interface:
 
