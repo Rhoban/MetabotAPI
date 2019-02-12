@@ -89,7 +89,10 @@ Under Mac OS X:
       
     cmake -DPYTHON_EXECUTABLE=/usr/local/bin/python ..
 
-installation of a udev rule in order to fix the name of the device in /dev directory
+## Linux: Automatic detection of the device interface:
+
+Here one installs a udev rule in order to fix the name of the device in /dev directory
+
     sudo usermod -a -G plugdev $USER
     sudo usermod -a -G dialout $USER
     sudo cp scripts/45-holobot.rules /etc/udev/rules.d/
