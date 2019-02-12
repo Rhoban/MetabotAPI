@@ -3,6 +3,7 @@ project(MetabotAPI)
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   message("compilation under linux")
+  # change the python version below if you do not want to use python3
   find_package(PythonInterp 3.0 REQUIRED)
   find_package(PythonLibs 3.0 REQUIRED)
   set(PYTHON_MODULE_EXTENSION .so)
