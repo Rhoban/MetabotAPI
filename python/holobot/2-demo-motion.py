@@ -4,6 +4,18 @@
 # Go to your build directory and run the following command 
 # python3 ../holobot/2-demo-motion.py <serial port>
 
+# First, one adds the current directory to PYTHONPATH because we need
+# to access to the holobot library: one supposes that you launch the
+# command from your build directory.
+# Note: this can be done manually within the launch command (PYTHONPATH=. python3 ...)
+# you can add it also in your .bashrc
+import sys
+import time
+sys.path.append('.')
+
+# Here one import and create the entry point to speak to the robot
+# the api is materialized by the instance holo defined below
+# this is the object from which you ask robot commands.
 from holobot import Holobot
 import time
 import sys
