@@ -23,6 +23,12 @@ namespace Metabot
     sent_dy = 0;
     sent_turn = 0;
     yaw0 = 0;
+
+    // Optical raw
+    Packet packet = command(9);
+    packet.appendByte(1);
+    send(packet);
+    
   }
 
   Holobot::~Holobot() {
@@ -32,16 +38,19 @@ namespace Metabot
 
   void Holobot::receive(Packet &packet) {
     if (packet.type == METABOT_MONITOR) {
+      uint8_t metabot_version = packet.readByte();
+      current_time = ((float) packet.readInt())/1000;
       distance = packet.readSmallFloat();
       for (int i=0; i<OPTICS_NB; i++) 
         optics[i] = ((float) packet.readByte()) / 255;
       for (int i=0; i<3; i++)
         wheel_speeds[i] = packet.readSmallFloat();
-      gyro_yaw = 10*packet.readSmallFloat();
-      acc_x = 10*packet.readSmallFloat();
-      acc_y = 10*packet.readSmallFloat();
-      acc_z = 10*packet.readSmallFloat();
-      current_time = (float) (((uint32_t) packet.readInt()) / 1000.0);
+      yaw = packet.readSmallFloat();
+      gyro_yaw = packet.readSmallFloat();
+      pitch = packet.readSmallFloat();
+      roll = packet.readSmallFloat();
+      int battery1 = packet.readByte();
+      int battery2 = packet.readByte();
       if (output_state) print_state();
       mutex.unlock();
     }
@@ -167,7 +176,8 @@ namespace Metabot
     printf("\n");
     printf("- distance (cm): %4.1f\n", distance);
     printf("- gyro yaw (deg): %4.1f\n", gyro_yaw);
-    printf("- accelerometer: X:%4.0f Y:%4.0f Z:%4.0f\n", acc_x, acc_y, acc_z); 
+    printf("- pitch (deg): %4.1f\n", pitch);
+    printf("- roll (deg): %4.1f\n", roll);
   }
 
   void Holobot::debug_state(uint8_t on_or_off) {

@@ -18,6 +18,7 @@ holo = Holobot(sys.argv[1], 115200)
 
 # Launch the calibration of the magnetic sensor.
 # this limitates the drift of the orientation sensor of the robot
+
 time.sleep(1)
 print('calibration of the magnetic sensor, please wait 5 sec')
 holo.calibrate_magneto()

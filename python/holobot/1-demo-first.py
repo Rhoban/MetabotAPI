@@ -39,8 +39,11 @@ print ('')
 
 print('- listen to the beeper !')
 time.sleep(1)
+holo.set_leds(255,0,0)
 holo.beep(880, 200)
 time.sleep(1)
+holo.set_leds(0,255,0)
 holo.beep(440, 200)
 time.sleep(1)
-
+holo.set_leds(0,0,255)
+holo.play(0)

@@ -20,6 +20,7 @@ namespace Metabot
 	    float optics[OPTICS_NB];
 	    float wheel_speeds[3];
 	    float gyro_yaw;
+        float yaw, pitch, roll;
 	    float acc_x, acc_y, acc_z;
 
             Holobot(std::string port, int baud=1000000);
