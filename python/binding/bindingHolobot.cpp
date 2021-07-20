@@ -28,6 +28,7 @@ PYBIND11_PLUGIN(holobot) {
         .def("calibrate_magneto", &Holobot::calibrate_magneto)
         .def("play", &Holobot::play)
       
+        .def("get_battery", &Holobot::get_battery)
         .def("get_time", &Holobot::get_time)
         .def("get_dist", &Holobot::get_dist)
         .def("get_opt", &Holobot::get_opt)
