@@ -39,7 +39,10 @@ void Robot::monitor(int frequency) {
 void Robot::rhock_mode() {
   if (verbose > 0)
     printf("- requesting rhock mode\n");
-  port.write("rhock\nrhock\nrhock\n");
+  for (int k=0; k<3; k++) {
+    port.write("\nrhock\n");
+    usleep(100000);
+  }
 }
 
 void Robot::process() {

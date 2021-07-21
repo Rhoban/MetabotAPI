@@ -12,7 +12,8 @@ Holobot::Holobot(std::string port, int baud) : Robot(port, baud) {
   output_state = false;
   usleep(250000);
   rhock_mode();
-  usleep(250000);
+  usleep(500000);
+
   if (verbose > 0) {
     printf("- monitoring\n");
   }
