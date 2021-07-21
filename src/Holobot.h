@@ -14,6 +14,7 @@ class Holobot : public Robot {
   float yaw0;
 
 public:
+  int updates;
   float current_time;
   float distance;
   float optics[OPTICS_NB];

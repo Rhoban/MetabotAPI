@@ -10,14 +10,11 @@ namespace Metabot {
 
 Holobot::Holobot(std::string port, int baud) : Robot(port, baud) {
   output_state = false;
-  usleep(250000);
-  rhock_mode();
-  usleep(500000);
 
   if (verbose > 0) {
     printf("- monitoring\n");
   }
-  monitor(5);
+  updates = 0;
   waitUpdate();
   sent_dx = 0;
   sent_dy = 0;
@@ -66,11 +63,20 @@ void Holobot::receive(Packet &packet) {
       print_state();
     }
 
+    updates += 1;
     mutex.unlock();
   }
 }
 
-void Holobot::waitUpdate() { mutex.lock(); }
+void Holobot::waitUpdate() { 
+  int initial_updates = updates;
+  
+  while (updates == initial_updates) {
+    rhock_mode();
+    monitor(5);
+    usleep(100000);
+  }
+}
 
 float Holobot::get_dist() { return distance; }
 
